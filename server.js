@@ -66,6 +66,58 @@ app.use(function (err, req, res, next) {
 });
 
 
+// Download the helper library from https://www.twilio.com/docs/node/install
+// Set environment variables for your credentials
+// Read more at http://twil.io/secure
+
+
+//  const accountSid = "AC06e7166b2ccbb91e20c719744165a53b";
+//  const authToken = "eb4bb7042823d1e22c641eb46672af1b";
+//  const verifySid = process.env.VERIFY_SID;
+//  const client = require("twilio")(accountSid, authToken);
+
+
+ const accountSid = "AC06e7166b2ccbb91e20c719744165a53b";
+ const authToken = "eb4bb7042823d1e22c641eb46672af1b";
+ const verifySid = "VAd58adec5e661168523314e5b9506a0e7";
+ const client = require("twilio")(accountSid, authToken);
+
+//  client.messages
+//    .create({
+//     body: 'Hello from twilio-node',
+//     from: '+2347085971914', // From a valid Twilio number
+//     to:'+2347085971914', // Text your number
+//    })
+//    .then((message) => console.log(message.sid));
+
+// Download the helper library from https://www.twilio.com/docs/node/install
+// Set environment variables for your credentials
+// Read more at http://twil.io/secure
+
+
+//  client.verify.v2
+//    .services(verifySid)
+   //.verifications.create({ to: "+2347085971914", channel: "sms" })
+   //.verifications.create({ to: "+2347085971914", channel: "whatsapp" })
+   //.verifications.create({ to: "+2347085971914", channel: "phone" })
+  //.verifications.create({ to: "+2347085971914", channel: "phone" })
+  //  .verifications.create({ to: "+2348053369550", channel: "call" })
+  //  .then((verification) => console.log(verification.status))
+  //  .then(() => {
+  //    const readline = require("readline").createInterface({
+  //      input: process.stdin,
+  //      output: process.stdout,
+  //    });
+  //    readline.question("Please enter the OTP:", (otpCode) => {
+  //      client.verify.v2
+  //        .services(verifySid)
+  //        .verificationChecks.create({ to: "+2347085971914", code: otpCode })
+  //        .then((verification_check) => console.log(verification_check.status))
+  //        .then(() => readline.close());
+  //    });
+  //  });
+//tttthgggggggggggggggg
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
   console.log('Server is started on http://127.0.0.1:'+PORT);

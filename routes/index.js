@@ -1,8 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var bodyParser = require('body-parser');
+//const {sendOTP, verifyOTP} = require('../src/controller/twilio-sms');
 const UserAgent = require('user-agents');
 const userAgent = new UserAgent();
+const {TWILIO_SERVICE_SID , TWILIO_ACCOUNT_SID ,TWILIO_AUTH_TOKEN } = process.env;
+const client = require('twilio')(TWILIO_ACCOUNT_SID , TWILIO_AUTH_TOKEN ,{
+    lazyLoading: true
+})
+
 
 
 router.get('/', function (req, res, next) {
@@ -144,5 +151,55 @@ router.post('/forgetpass', function (req, res, next) {
 	});
 	
 });
+
+
+
+
+
+
+router.post('/sendOTP', async(req, res, next) => {
+    const {countryCode, phoneNumber} = req.body;
+
+    try{
+		const message = `Hello from Teco Blog! Your verification code is: `;
+		//const message = `Hello from Teco Blog! Your verification code is: ${randomNumber}`;
+
+
+        const otpResponse = await client.verify.v2
+        .services(TWILIO_SERVICE_SID )
+        .verifications.create({
+			channel : "sms",
+            to: `+${countryCode}${phoneNumber}`,
+			body:message
+
+        });
+
+        res.status(200).send(`OTP Sent SUcessfully !: ${JSON.stringify(otpResponse)}`);
+    }catch(error) {
+        res.status(error?.status || 400).send(error?.message || 'Something Went Wrong !');
+    }
+});
+// router.route('/send-otp').post(sendOTP);
+
+
+
+router.post('/VerifyOTP', async(req, res, next) => {
+    const {countryCode, phoneNumber, otp} = req.body;
+
+    try{
+
+        const verifiedResponse = await client.verify.v2
+        .services(TWILIO_SERVICE_SID )
+        .verificationChecks.create({
+            to: `+${countryCode}${phoneNumber}`,
+            code : otp,
+        });
+        res.status(200).send(`OTP Verified Sucessfully !: ${JSON.stringify(verifiedResponse)}`);
+    }catch(error) {
+        res.status(error?.status || 400).send(error?.message || 'Something Went Wrong !');
+    }
+}
+);
+// router.route('/verify-otp').post(verifyOTP);
 
 module.exports = router;
